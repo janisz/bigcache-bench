@@ -3,12 +3,11 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"sync"
 	"testing"
 	"time"
 
-	"github.com/allegro/bigcache/v2"
-	"github.com/coocood/freecache"
+	"github.com/allegro/bigcache"
+	"github.com/allegro/bigcache-bench/sync"
 )
 
 const maxEntrySize = 256
@@ -24,13 +23,6 @@ func BenchmarkConcurrentMapSet(b *testing.B) {
 	var m sync.Map
 	for i := 0; i < b.N; i++ {
 		m.Store(key(i), value())
-	}
-}
-
-func BenchmarkFreeCacheSet(b *testing.B) {
-	cache := freecache.NewCache(b.N * maxEntrySize)
-	for i := 0; i < b.N; i++ {
-		cache.Set([]byte(key(i)), value(), 0)
 	}
 }
 
@@ -74,19 +66,6 @@ func BenchmarkConcurrentMapGet(b *testing.B) {
 	}
 }
 
-func BenchmarkFreeCacheGet(b *testing.B) {
-	b.StopTimer()
-	cache := freecache.NewCache(b.N * maxEntrySize)
-	for i := 0; i < b.N; i++ {
-		cache.Set([]byte(key(i)), value(), 0)
-	}
-
-	b.StartTimer()
-	for i := 0; i < b.N; i++ {
-		cache.Get([]byte(key(i)))
-	}
-}
-
 func BenchmarkBigCacheGet(b *testing.B) {
 	b.StopTimer()
 	cache := initBigCache(b.N)
@@ -109,20 +88,6 @@ func BenchmarkBigCacheSetParallel(b *testing.B) {
 		counter := 0
 		for pb.Next() {
 			cache.Set(parallelKey(id, counter), value())
-			counter = counter + 1
-		}
-	})
-}
-
-func BenchmarkFreeCacheSetParallel(b *testing.B) {
-	cache := freecache.NewCache(b.N * maxEntrySize)
-	rand.Seed(time.Now().Unix())
-
-	b.RunParallel(func(pb *testing.PB) {
-		id := rand.Intn(1000)
-		counter := 0
-		for pb.Next() {
-			cache.Set([]byte(parallelKey(id, counter)), value(), 0)
 			counter = counter + 1
 		}
 	})
@@ -151,23 +116,6 @@ func BenchmarkBigCacheGetParallel(b *testing.B) {
 		counter := 0
 		for pb.Next() {
 			cache.Get(key(counter))
-			counter = counter + 1
-		}
-	})
-}
-
-func BenchmarkFreeCacheGetParallel(b *testing.B) {
-	b.StopTimer()
-	cache := freecache.NewCache(b.N * maxEntrySize)
-	for i := 0; i < b.N; i++ {
-		cache.Set([]byte(key(i)), value(), 0)
-	}
-
-	b.StartTimer()
-	b.RunParallel(func(pb *testing.PB) {
-		counter := 0
-		for pb.Next() {
-			cache.Get([]byte(key(counter)))
 			counter = counter + 1
 		}
 	})

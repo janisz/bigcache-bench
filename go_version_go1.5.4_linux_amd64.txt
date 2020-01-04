@@ -1,0 +1,13 @@
+PASS
+BenchmarkMapSet-8                  	 2000000	       942 ns/op	     233 B/op	       3 allocs/op
+BenchmarkConcurrentMapSet-8        	 1000000	      1610 ns/op	     353 B/op	       8 allocs/op
+BenchmarkBigCacheSet-8             	 2000000	       696 ns/op	     348 B/op	       2 allocs/op
+BenchmarkMapGet-8                  	 3000000	       434 ns/op	      32 B/op	       2 allocs/op
+BenchmarkConcurrentMapGet-8        	 3000000	       506 ns/op	      32 B/op	       2 allocs/op
+BenchmarkBigCacheGet-8             	 2000000	       705 ns/op	     160 B/op	       4 allocs/op
+BenchmarkBigCacheSetParallel-8     	10000000	       274 ns/op	     352 B/op	       3 allocs/op
+BenchmarkConcurrentMapSetParallel-8	 3000000	       524 ns/op	     208 B/op	       6 allocs/op
+BenchmarkBigCacheGetParallel-8     	10000000	       147 ns/op	     160 B/op	       4 allocs/op
+BenchmarkConcurrentMapGetParallel-8	10000000	       252 ns/op	      32 B/op	       2 allocs/op
+ok  	github.com/allegro/bigcache-bench	68.733s
+?   	github.com/allegro/bigcache-bench/sync	[no test files]

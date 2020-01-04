@@ -1,0 +1,16 @@
+goos: linux
+goarch: amd64
+pkg: github.com/allegro/bigcache-bench
+BenchmarkMapSet-8                     	 3000000	       505 ns/op	     202 B/op	       3 allocs/op
+BenchmarkConcurrentMapSet-8           	 1000000	      1586 ns/op	     347 B/op	       8 allocs/op
+BenchmarkBigCacheSet-8                	 3000000	       584 ns/op	     324 B/op	       2 allocs/op
+BenchmarkMapGet-8                     	 5000000	       373 ns/op	      24 B/op	       1 allocs/op
+BenchmarkConcurrentMapGet-8           	 3000000	       416 ns/op	      24 B/op	       2 allocs/op
+BenchmarkBigCacheGet-8                	 3000000	       513 ns/op	     152 B/op	       3 allocs/op
+BenchmarkBigCacheSetParallel-8        	10000000	       165 ns/op	     338 B/op	       3 allocs/op
+BenchmarkConcurrentMapSetParallel-8   	 5000000	       269 ns/op	     200 B/op	       6 allocs/op
+BenchmarkBigCacheGetParallel-8        	20000000	       106 ns/op	     152 B/op	       4 allocs/op
+BenchmarkConcurrentMapGetParallel-8   	10000000	       186 ns/op	      24 B/op	       2 allocs/op
+PASS
+ok  	github.com/allegro/bigcache-bench	71.433s
+?   	github.com/allegro/bigcache-bench/sync	[no test files]

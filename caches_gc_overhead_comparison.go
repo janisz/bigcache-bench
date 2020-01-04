@@ -6,8 +6,7 @@ import (
 	"runtime/debug"
 	"time"
 
-	"github.com/allegro/bigcache/v2"
-	"github.com/coocood/freecache"
+	"github.com/allegro/bigcache"
 )
 
 var previousPause time.Duration
@@ -35,15 +34,10 @@ func main() {
 	fmt.Println("GC pause for startup: ", gcPause())
 
 	stdMap()
-	freeCache()
 	bigCache()
 
 	fmt.Println("GC pause for warmup: ", gcPause())
 
-	for i := 0; i < repeat; i++ {
-		freeCache()
-	}
-	fmt.Println("GC pause for freecache: ", gcPause())
 	for i := 0; i < repeat; i++ {
 		bigCache()
 	}
@@ -59,23 +53,6 @@ func stdMap() {
 	for i := 0; i < entries; i++ {
 		key, val := generateKeyValue(i, valueSize)
 		mapCache[key] = val
-	}
-}
-
-func freeCache() {
-	freeCache := freecache.NewCache(entries * 200) //allocate entries * 200 bytes
-	for i := 0; i < entries; i++ {
-		key, val := generateKeyValue(i, valueSize)
-		if err := freeCache.Set([]byte(key), val, 0); err != nil {
-			fmt.Println("Error in set: ", err.Error())
-		}
-	}
-
-	firstKey, _ := generateKeyValue(1, valueSize)
-	checkFirstElement(freeCache.Get([]byte(firstKey)))
-
-	if freeCache.OverwriteCount() != 0 {
-		fmt.Println("Overwritten: ", freeCache.OverwriteCount())
 	}
 }
 

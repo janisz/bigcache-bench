@@ -1,0 +1,3 @@
+exit status 2
+FAIL	github.com/allegro/bigcache-bench	0.002s
+?   	github.com/allegro/bigcache-bench/sync	[no test files]
